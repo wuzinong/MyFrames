@@ -1,10 +1,11 @@
-
+﻿
 var gulp = require('gulp'); //引入gulp
 var concat = require('gulp-concat');
 var jshint = require('gulp-jshint');//引入插件
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');//sass监听
 var autoprefixer = require('gulp-autoprefixer');//自动添加前缀
+var cleancss = require('gulp-clean-css');//取代minify
 
 //npm install  gulp
 //npm install 先安装package.json中需要的插件
