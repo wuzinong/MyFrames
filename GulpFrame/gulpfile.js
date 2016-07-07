@@ -5,9 +5,11 @@ var jshint = require('gulp-jshint');//引入插件
 var uglify = require('gulp-uglify');
 var sass = require('gulp-sass');//sass监听
 var autoprefixer = require('gulp-autoprefixer');//自动添加前缀
-var cleancss = require('gulp-clean-css');//取代minify
+//var cleancss = require('gulp-clean-css');//取代minify
 
-//npm install  gulp
+var babel = require("gulp-babel");//ES6
+
+
 //npm install 先安装package.json中需要的插件
 
 gulp.task('hintTest', function() {
@@ -22,6 +24,26 @@ gulp.task('handleScripts', function() {
       .pipe(uglify())
       .pipe(gulp.dest('./build/scripts/'));
 });
+
+
+
+//Es6转换ES6
+gulp.task("Es6ToEs5", function () {
+    return gulp.src("src/scripts/es6/*.js")
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(concat('convertedEs6.js'))
+        .pipe(gulp.dest("./build/scripts/es6/"));
+});
+//监听ES6实时转换
+gulp.task('watchEs6',['Es6ToEs5'],function(){
+   gulp.watch("src/scripts/es6/*.js",function(){
+        gulp.run('Es6ToEs5');
+   })
+});
+
+
 
 
 gulp.task('handleSass',function(){
