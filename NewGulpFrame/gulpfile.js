@@ -13,10 +13,20 @@ var jshint = require('gulp-jshint');//引入插件
 var rename = require('gulp-rename');
 
 
+var rootPath = {
+    src: './Content',
+    dist: './dist'
+}
+
 var srcPath = {
-   sassPath:"./Content/sass",//sass文件路径
-   cssPath:"./Content/css",  //编译后的css文件路径
-   jsPath:"./Content/js"
+   sassPath:rootPath.src+"/sass",//sass文件路径
+   cssPath:rootPath.src+"/css",  //编译后的css文件路径
+   jsPath:rootPath.src+"/js"
+}
+
+var distPath = {
+    cssPath:rootPath.dist+"/css",
+    jsPath:rootPath.dist+"/js"
 }
 
  
@@ -38,7 +48,7 @@ gulp.task('watchSass',function(){
               }))
               // .pipe(concat('all.min.css'))
               // .pipe(cleancss())
-              .pipe(gulp.dest(srcPath.cssPath));
+              .pipe(gulp.dest(srcPath.cssPath));//编译scss文件至Content/css目录
 });
 //压缩合并css
 gulp.task('handleCss',function(){
@@ -46,7 +56,7 @@ gulp.task('handleCss',function(){
    return gulp.src([srcPath.cssPath+'/*.css'])
               .pipe(concat('built.min.css'))
               .pipe(cleancss())
-              .pipe(gulp.dest(srcPath.cssPath));
+              .pipe(gulp.dest(distPath.cssPath));//合并压缩并输出到dist/css下
 });
 
 
@@ -65,7 +75,7 @@ gulp.task('handleScripts', function() {
       .pipe(concat("handledJS.min.js"))
       //.pipe(rename({suffix:'.min'}))
       .pipe(uglify())
-      .pipe(gulp.dest(srcPath.jsPath));
+      .pipe(gulp.dest(distPath.jsPath));//压缩合并js至dist/js
 });
 
 

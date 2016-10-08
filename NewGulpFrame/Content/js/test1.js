@@ -5,6 +5,10 @@ function getA(){
 	this.c = "c";    
 	this.d = "d";
 	this.get = function(){
-		 return "d"; 
+		 return "d";  
 	}; 
-} 
+}   
+
+function ggg(){
+	this.ss = "d";
+}
