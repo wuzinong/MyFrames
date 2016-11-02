@@ -1,8 +1,3 @@
-{
-  // Default options
-  'functions': true,
-  'variableNameTransforms': ['dasherize']
-}
  
 {{#extend "scss"}}
 {{#content "sprites"}}
@@ -15,3 +10,16 @@ ${{spritesheet_info.strings.name_sprites}}: ({{#each sprites}}${{strings.name}},
 ${{spritesheet_info.strings.name}}: ({{spritesheet.px.width}}, {{spritesheet.px.height}}, '{{{spritesheet.escaped_image}}}', ${{spritesheet_info.strings.name_sprites}}, );
 {{/content}}
 {{/extend}}
+
+@each $x,$y,$offset_x,$offset_y,$width,$height,$total_width,$total_height,$path,$name in $spritesheet-sprites{
+    .#{$name}{
+    	 width:$width;
+    	 height:$height;
+    	 display: inline-block;
+    	 background-position: $offset_x $offset_y;
+    }
+}
+
+.backImg{
+   	 background:url(nth($spritesheet,3));
+}

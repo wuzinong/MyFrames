@@ -12,6 +12,13 @@ var jshint = require('gulp-jshint');//引入插件
 
 var rename = require('gulp-rename');
 
+//合并雪碧图
+var merge = require('merge-stream');
+var spritesmith = require('gulp.spritesmith');//雪碧图生成
+var notify = require('gulp-notify');
+
+var spriter  = require('gulp-css-spriter');//另一种雪碧图生成
+
 
 var rootPath = {
     src: './Content',
@@ -21,12 +28,15 @@ var rootPath = {
 var srcPath = {
    sassPath:rootPath.src+"/sass",//sass文件路径
    cssPath:rootPath.src+"/css",  //编译后的css文件路径
-   jsPath:rootPath.src+"/js"
+   jsPath:rootPath.src+"/js",
+   slice:rootPath.src+"/images/slice",  //待合并的雪碧图
+   sprite: rootPath.src + '/images/sprite',
 }
 
 var distPath = {
     cssPath:rootPath.dist+"/css",
-    jsPath:rootPath.dist+"/js"
+    jsPath:rootPath.dist+"/js",
+    imgPath:rootPath.dist+"/images"
 }
 
  
@@ -54,7 +64,8 @@ gulp.task('watchSass',function(){
 gulp.task('handleCss',function(){
    //return gulp.src([srcPath.cssPath+'/*.css',"!"+srcPath.cssPath+'/base.css'])
    return gulp.src([srcPath.cssPath+'/*.css'])
-              .pipe(concat('built.min.css'))
+              //.pipe(concat('built.min.css')) //输出一个压缩文件
+              .pipe(rename({suffix:'.min'})) //压缩输出到dist目录
               .pipe(cleancss())
               .pipe(gulp.dest(distPath.cssPath));//合并压缩并输出到dist/css下
 });
@@ -63,7 +74,7 @@ gulp.task('handleCss',function(){
 
 
 
-//监听js出差
+//监听js错误
 gulp.task('jshint', function() {
     gulp.src([srcPath.jsPath+"/*.js"])
       .pipe(jshint())
@@ -72,11 +83,49 @@ gulp.task('jshint', function() {
 
 gulp.task('handleScripts', function() {
     gulp.src([srcPath.jsPath+"/*.js","!"+srcPath.jsPath+"/handledJS.js"])
-      .pipe(concat("handledJS.min.js"))
-      //.pipe(rename({suffix:'.min'}))
+      //.pipe(concat("handledJS.min.js")) //输出一个文件
+      .pipe(rename({suffix:'.min'})) //压缩输出到dist目录
       .pipe(uglify())
       .pipe(gulp.dest(distPath.jsPath));//压缩合并js至dist/js
 });
+
+
+// 合并精灵图片1 
+gulp.task('sprite', function () {
+  var spriteData = gulp.src(srcPath.slice+'/*').pipe(spritesmith({//需要合并的图片地址
+    imgName: 'sprite.png',  //保存合并后图片的地址
+    cssName: 'sprite.scss', //保存合并后对于css样式的地址
+    padding:5,  //合并时两个图片的距离
+    //algorithm:'binary-tree', //即合并图片的位置，top-down:从上到下，left-right-从左到右等等
+    imgPath:'../images/sprite/sprite.png',
+    cssTemplate: 'scss.sprite.template.mustcache'  //
+  }));
+
+  var imgStream = spriteData.img
+    .pipe(gulp.dest(srcPath.sprite));
+
+  var cssStream = spriteData.css
+    .pipe(gulp.dest(srcPath.sassPath));
+
+  return merge(imgStream, cssStream)
+        .pipe(notify({
+            message: 'sprite task ok'
+        }));
+});
+
+//合成精灵图片2 生成css
+// gulp.task('spriteCss',function(){
+//      return gulp.src(srcPath.cssPath+'/sprite.css')
+//             .pipe(spriter({
+//             // The path and file name of where we will save the sprite sheet
+//             'spriteSheet': distPath.imgPath+'/sprite.png', //生成的spriter的位置
+//             // Because we don't know where you will end up saving the CSS file at this point in the pipe,
+//             // we need a litle help identifying where it will be.
+//             'pathToSpriteSheetFromCSS': distPath.imgPath+'/sprite.png' //这是在css引用的图片路径，很重要
+//             }))
+//             .pipe(gulp.dest(srcPath.cssPath)); //最后生成出来
+// })
+
 
 
 

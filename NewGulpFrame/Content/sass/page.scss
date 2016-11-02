@@ -1,0 +1,108 @@
+@import 'tools';
+@import 'sprite';
+/*Test begin*/
+
+/*调用Mixin*/
+div{
+	@include common;
+}
+
+
+/*继承*/
+.message{
+	padding:10px;
+	color:purple;
+}
+
+%message2{
+	border:2px solid black;
+}
+
+.warning{
+	border-color:yellow;
+	@extend .message;
+	@extend %message2;
+
+}
+
+/*运算,e.g 栅格布局*/
+.container{
+	width:100%;
+}
+article[role="main"]{
+	float:left;
+	width:600px / 960px * 100%;
+}
+aside[role="complementary"]{
+	float:right;
+	width:300px / 960px * 100%;
+}
+
+.ttTest{
+    font-size:pxTorem(320px);
+
+}
+ 
+.clearfix{
+	*zoom:1;
+	&:after,
+	&:before{
+		content:"";
+		display:table;
+	}
+	&:after{
+		clear:both;
+		overflow:hidden;
+	}
+}
+
+$gridColumns:12 !default;
+$gridcolumnWidth:60px !default;
+$gridGutter:20px !default;
+
+%span-base{
+	float:left;
+	margin-left:$gridGutter / 2;
+	margin-right:$gridGutter / 2;
+}
+@for $i from 1 through $gridColumns{
+	 .span#{$i}{
+	 	 @extend %span-base;
+	 	 width:($gridcolumnWidth + $gridGutter) * $i - $gridGutter;
+	 }
+}
+
+@each $animal in puma,sea-slug,egret,salamander{
+    .#{$animal}-icon{
+    	background-image: url('/images/#{$animal}.png');
+    }
+}
+
+$btnColorClass: (primary #0078E7 #fff) (blue #00A3CF #fff) (orange #F47837 #fff) !default;
+
+@mixin btn-color($bgColor:#e6e6e6, $textColor:#333){
+    color:$textColor;
+    background-color: $bgColor;
+    border:1px solid darken($bgColor, 5%);
+    border-color:lighten($bgColor, 2%) darken($bgColor, 5%) darken($bgColor, 5%) lighten($bgColor, 2%);
+
+    &:hover{
+        background-color: darken($bgColor,5%);
+        color:$textColor;
+    }
+}
+
+@each $colorClass in $btnColorClass{
+
+  $class:      nth($colorClass,1);
+  $bgColor:    nth($colorClass,2);
+  $textColor:  nth($colorClass,3);
+
+  .btn-#{$class}{
+    @include btn-color($bgColor,$textColor);
+  }
+}
+
+
+
+/*Test end*/

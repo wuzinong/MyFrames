@@ -11,4 +11,4 @@ function getA(){
 
 function ggg(){
 	this.ss = "d";
-}
+} 

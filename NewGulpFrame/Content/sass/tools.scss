@@ -1,0 +1,13 @@
+
+$default-size: 640px !default;//变量的值可以根据自己需求定义
+
+
+@mixin common{
+	border:1px solid red;
+	color:red;
+	text-align: center;
+}
+
+@function pxTorem($px){
+    @return $px / $default-size * 1rem;
+}
