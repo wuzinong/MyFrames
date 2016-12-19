@@ -4,6 +4,9 @@ import React, { PropTypes,Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import pureRender from 'pure-render-decorator';
+
+import '../less/list.less';
+
 //example source website:https://segmentfault.com/a/1190000004290333
 class List extends Component{
      constructor(props){
@@ -17,10 +20,17 @@ class List extends Component{
       render(){
          const {name,age,persons} = this.state;
          return (
-            <div>
-            <span>Name:</span><input type="text" value={name} name="name" onChange={this._handleChange.bind(this)} />
-            <span>age:</span> <input type="text" value={age} name="age" onChange={this._handleChange.bind(this)}/>
-            <input type="button" onClick={this._handleClick.bind(this)} value="确认"></input>
+            <div className="addList">
+            <dl className="clearfix">
+               <dt>Name:</dt>
+               <dd><input type="text" value={name} name="name" onChange={this._handleChange.bind(this)} /></dd>
+            </dl>
+            <dl className="clearfix">
+               <dt>age:</dt>
+               <dd> <input type="text" value={age} name="age" onChange={this._handleChange.bind(this)}/></dd>
+            </dl>
+
+            <button onClick={this._handleClick.bind(this)}>确认</button>
               {persons.map((person,index)=>(
               <Person key={index} name={person.name} age={person.age}></Person>
             ))}

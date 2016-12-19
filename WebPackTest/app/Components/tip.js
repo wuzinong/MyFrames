@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-require('./index.less');
+import '../less/tip.less';
 
 class Tips extends React.Component{
 

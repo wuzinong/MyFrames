@@ -3,10 +3,11 @@ var webpack = require('webpack');
 var path = require('path');
 var HtmlwebpackPlugin =require('html-webpack-plugin');
 
+ 
+//npm start
+
 var config = {
-	 entry:[ 
-	    'webpack/hot/dev-server',
-	    'webpack-dev-server/client?http://localhost:3000',
+	 entry:[
 	    './app/index.js'
 	 ],
 	 output:{
@@ -17,7 +18,7 @@ var config = {
 	 	loaders:[
 	 	   //{test:/\.js$/,loaders:[babel],exclude:/node_modules/}
 	 	    {
-		        test: /\.less$/,
+		        test: /\.(css|less)$/,
 		        loaders: ['style', 'css', 'less'],
 		        include: path.resolve(__dirname, 'app')
 		     },
@@ -26,16 +27,30 @@ var config = {
 		     	loader:'babel',
 		     	exclude:/node_modules/,
 		     	query:{
-		     		presets:['react','es2015']
+		     		presets:['react','es2015'],
+		     		plugins:[
+		     		  ['import',{
+		     		  	libraryName:'antd',
+		     		  	style:'css',
+		     		  }]
+		     		]
 		     	}
 		     }
 	 	]
 	 },
 	 plugins:[
 	 	new HtmlwebpackPlugin({
-	 		title:'React ddd'
+	 		title:'React',
+	 		template:'./template/index.html'
 	 	})
-	 ]
+	 ],
+	 devServer:{
+	 	 historyApiFallback:true,
+	 	 hot:true,
+	 	 inline:true,
+	 	 progress:true,
+	 	 port:3000
+	 }
 }
 
 module.exports = config;

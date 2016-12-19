@@ -1,18 +1,17 @@
 
-
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Comp from './component';
-import List from './List';
+import route from './Router/Route'; //路由配置
+import './less/base.less';
 
-class HelloReact extends React.Component{
-	 render(){
-	 	 return (
-	 	 	<div>Hello React
-	 	 		<Comp/>
-	 	 		<List/>
-	 	 	</div>
-	 	 	)
-	 }
-}
-ReactDOM.render(<HelloReact/>,document.body);
+// class HelloReact extends React.Component{
+// 	 render(){
+// 	 	 return (
+// 	 	 	<div>
+// 	 	 		<Login/>
+// 	 	 	</div>
+// 	 	 	)
+// 	 }
+// }
+
+	ReactDOM.render(<div>{route}</div>,document.getElementById("container"));
