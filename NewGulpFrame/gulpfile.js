@@ -1,7 +1,7 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
+var gulp = require('gulp');//quote gulp
+var sass = require('gulp-sass');//dealing with sass files
 var uglify = require('gulp-uglify');//压缩js
 var autoprefixer = require('gulp-autoprefixer');//自动添加前缀
 var cleancss = require('gulp-clean-css');//压缩css

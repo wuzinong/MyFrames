@@ -23,3 +23,7 @@ ${{spritesheet_info.strings.name}}: ({{spritesheet.px.width}}, {{spritesheet.px.
 .backImg{
    	 background:url(nth($spritesheet,3));
 }
+
+.iBlock{
+	display:inline-block;
+}
